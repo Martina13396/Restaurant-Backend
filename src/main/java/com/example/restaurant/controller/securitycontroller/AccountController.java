@@ -13,6 +13,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 @Tag(
         name = "Account Controller",
         description = " create and get accounts"
@@ -57,7 +60,7 @@ public class AccountController {
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
-                    description = "Http Status get all categories"
+                    description = "Http Status get account By user name"
             ),
             @ApiResponse(
                     responseCode = "500",
@@ -80,5 +83,62 @@ public class AccountController {
 
     }
 
+    @Operation(
+            summary = "api to change password"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Http Status change password"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Http Status internal server error",
+                    content = @Content(
+                            schema = @Schema(implementation = ExceptionDto.class)
+                    )
+            ),
 
+    })
+
+    @PutMapping("/changePassword")
+    ResponseEntity<AccountDto> changePassword(@RequestParam String oldPassword, @RequestParam String newPassword){
+        return ResponseEntity.ok(accountService.changePassword( oldPassword, newPassword));
+
+    }
+
+    @PutMapping("/deleteAccount")
+    ResponseEntity<Void> deleteAccount(@RequestParam Long accountId){
+      this.accountService.deleteAccount(accountId);
+      return ResponseEntity.ok().build();
+    }
+
+    @Operation(
+            summary = "api to get all accounts"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Http Status get all accounts"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Http Status internal server error",
+                    content = @Content(
+                            schema = @Schema(implementation = ExceptionDto.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Http Status Not Found",
+                    content = @Content(
+                            schema = @Schema(implementation = ExceptionDto.class)
+                    )
+            )
+    })
+
+    @GetMapping("/getAll")
+    ResponseEntity<List<AccountDto>> getAllAccounts(){
+        return ResponseEntity.ok(accountService.getAllAccounts());
+    }
 }

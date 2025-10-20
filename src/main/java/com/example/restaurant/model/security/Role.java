@@ -1,5 +1,6 @@
 package com.example.restaurant.model.security;
 
+import com.example.restaurant.model.BaseEntity;
 import com.example.restaurant.model.RoleCode;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -14,16 +15,13 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Role {
+public class Role extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     @Enumerated(EnumType.STRING)
     private RoleCode code;
 
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy = "roles" , cascade = CascadeType.ALL)
     List<Account> accounts;
 
 

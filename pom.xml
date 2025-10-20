@@ -105,6 +105,16 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
+
+            <!-- ... other dependencies ... -->
+
+            <!-- REQUIRED for Jackson to handle java.time.LocalDateTime -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.datatype</groupId>
+                <artifactId>jackson-datatype-jsr310</artifactId>
+            </dependency>
+
+
     </dependencies>
 
 <!--    <build>-->

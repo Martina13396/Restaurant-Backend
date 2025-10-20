@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -21,8 +22,13 @@ public class RequestOrderVm {
     @NotNull(message = "total.number.not.empty")
     @Schema(name = "Total Number", description = " total items number", example = "6")
     private Integer totalNumber;
-    @NotEmpty(message = "ids.not.empty")
-    List<Long> productsIds;
+
+    @NotEmpty(message = "products.not.empty")
+    private List<ProductOrderRequestVm> products;
+
+
+
+
 
 
 }

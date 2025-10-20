@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RoleRepo extends JpaRepository<Role, Long> {
-    Object findByCode(RoleCode code);
+  Role findByCode(RoleCode code);
 }

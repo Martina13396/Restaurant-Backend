@@ -2,6 +2,8 @@ package com.example.restaurant.controller;
 
 import com.example.restaurant.controller.vm.ProductResponseVm;
 import com.example.restaurant.helper.BundleMessage;
+import com.example.restaurant.mapper.ProductMapper;
+import com.example.restaurant.model.Product;
 import com.example.restaurant.service.ProductService;
 import com.example.restaurant.service.dto.ExceptionDto;
 import com.example.restaurant.service.dto.ProductDto;
@@ -19,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -46,7 +49,7 @@ public class ProductController {
       @ApiResponses({
               @ApiResponse(
                       responseCode = "200",
-                      description = "Http Status get all categories",
+                      description = "Http Status get products by category id",
                       content = @Content(
                               schema =  @Schema(implementation = ProductResponseVm.class)
                       )
@@ -70,8 +73,8 @@ public class ProductController {
 
 
     @GetMapping("/searchByCategoryId/{categoryId}")
-   ResponseEntity<ProductResponseVm> getProductsByCategoryId(@PathVariable Long categoryId , @Parameter(description = "this page contain products and must start with 1") @RequestParam int page,@Parameter(description = "this is size of products") @RequestParam int size){
-         return  ResponseEntity.ok(productService.getProductsByCategoryId(categoryId , page ,size));
+   ResponseEntity<ProductResponseVm> getProductsByCategoryId(@PathVariable Long categoryId , @Parameter(description = "this page contain products and must start with 1") @RequestParam int page,@Parameter(description = "this is size of products") @RequestParam int size ){
+         return  ResponseEntity.ok(productService.getProductsByCategoryId(categoryId , page ,size ));
     }
 
    @Operation(
@@ -80,7 +83,7 @@ public class ProductController {
    @ApiResponses({
            @ApiResponse(
                    responseCode = "200",
-                   description = "Http Status get all categories",
+                   description = "Http Status save product",
                    content = @Content(
                            schema = @Schema(implementation = ProductResponseVm.class)
                    )
@@ -106,7 +109,7 @@ public class ProductController {
    @ApiResponses({
            @ApiResponse(
                    responseCode = "200",
-                   description = "Http Status get all categories"
+                   description = "Http Status save products"
            ),
            @ApiResponse(
                    responseCode = "500",
@@ -128,7 +131,7 @@ public class ProductController {
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
-                    description = "Http Status get all categories"
+                    description = "Http Status update product"
             ),
             @ApiResponse(
                     responseCode = "500",
@@ -151,7 +154,7 @@ public class ProductController {
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
-                    description = "Http Status get all categories"
+                    description = "Http Status get update products"
             ),
             @ApiResponse(
                     responseCode = "500",
@@ -170,13 +173,9 @@ public class ProductController {
     @Operation(
             summary = "api to delete a product"
     )
-    @DeleteMapping("deleteOne")
-    ResponseEntity<Void> deleteProduct(@RequestParam Long id){
-        if(Objects.nonNull(id)){
-          return ResponseEntity.noContent().build();
-        }else{
-            return ResponseEntity.notFound().build();
-        }
+    @PutMapping("/deleteOne")
+    ResponseEntity<ProductDto> deactivate(@RequestParam Long id){
+        return ResponseEntity.ok(productService.deactivate(id));
     }
 
     @Operation(
@@ -198,7 +197,7 @@ public class ProductController {
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
-                    description = "Http Status get all categories",
+                    description = "Http Status search products",
                     content =  @Content(
                             schema = @Schema(implementation = ExceptionDto.class)
                     )
@@ -219,7 +218,7 @@ public class ProductController {
             )
     })
     @GetMapping("/search")
-    ResponseEntity<ProductResponseVm> searchProducts(@RequestParam String keyword,  @Parameter(description = "this page contain products and must start with 1")@RequestParam int page, @Parameter(description = "this is page size") @RequestParam int size ){
+    ResponseEntity<ProductResponseVm> searchProducts(@RequestParam String keyword,  @Parameter(description = "this page contain products and must start with 1")@RequestParam int page, @Parameter(description = "this is page size") @RequestParam int size  ){
         return ResponseEntity.ok(productService.searchProducts(keyword ,page,size));
     }
 
@@ -229,7 +228,7 @@ public class ProductController {
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
-                    description = "Http Status get all categories",
+                    description = "Http Status get all products",
                     content =  @Content(
                             schema = @Schema(implementation = ProductResponseVm.class)
                     )
@@ -250,8 +249,8 @@ public class ProductController {
             )
     })
     @GetMapping("/getAll")
-    ResponseEntity<ProductResponseVm> getAllProducts(@RequestParam  @Parameter(description = "this page contain products and must start with 1")int page,@Parameter(description = "this is page size") @RequestParam int size){
-        return ResponseEntity.ok(productService.getAllProductsByIdAsc(page ,  size));
+    ResponseEntity<ProductResponseVm> getAllProducts(@RequestParam  @Parameter(description = "this page contain products and must start with 1")int page,@Parameter(description = "this is page size") @RequestParam int size ){
+        return ResponseEntity.ok(productService.getAllProductsByIdAsc(page ,  size ));
     }
 
 
@@ -261,7 +260,7 @@ public class ProductController {
    @ApiResponses({
            @ApiResponse(
                    responseCode = "200",
-                   description = "Http Status get all categories",
+                   description = "Http Status get search in categories",
                    content =   @Content(
                            schema = @Schema(implementation = ProductResponseVm.class)
                    )
@@ -282,9 +281,48 @@ public class ProductController {
            )
    })
     @GetMapping("/searchByCategoryAndKey")
-   ResponseEntity<ProductResponseVm> searchByCategoryAndKeyword(@RequestParam Long categoryId , @RequestParam String keyword ,  @Parameter(description = "this page contain products and must start with 1")@RequestParam int page, @Parameter(description ="this is page size" )@RequestParam int size){
+   ResponseEntity<ProductResponseVm> searchByCategoryAndKeyword(@RequestParam Long categoryId , @RequestParam String keyword ,  @Parameter(description = "this page contain products and must start with 1")@RequestParam int page, @Parameter(description ="this is page size" )@RequestParam int size , @RequestParam(defaultValue = "false") boolean includeInactive){
 
-        return ResponseEntity.ok(productService.searchByCategoryAndKeyword(categoryId, keyword , page , size));
+        return ResponseEntity.ok(productService.searchByCategoryAndKeyword(categoryId, keyword , page , size ));
     }
 
+
+    @Operation(
+            summary = "api to get product by id"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Http Status get product by id",
+                    content =   @Content(
+                            schema = @Schema(implementation = ProductResponseVm.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Http Status internal server error",
+                    content = @Content(
+                            schema = @Schema(implementation = ExceptionDto.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Http Status Not Found",
+                    content = @Content(
+                            schema = @Schema(implementation = ExceptionDto.class)
+                    )
+            )
+    })
+    @GetMapping("/getById")
+    ResponseEntity<ProductDto>getProductById(@RequestParam Long id ){
+        return ResponseEntity.ok(productService.getProductById(id));
+
+    }
+
+
+    @GetMapping("/all")
+    ResponseEntity<List<ProductDto>> findAll() {
+        return ResponseEntity.ok(productService.findAll());
+
+    }
 }

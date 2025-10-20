@@ -9,6 +9,7 @@ import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
@@ -34,7 +35,7 @@ public class TokenHandler {
 
 
    @Autowired
-    public TokenHandler(JwtToken jwtToken , AccountService accountService) {
+    public TokenHandler(JwtToken jwtToken , @Lazy AccountService accountService) {
 
       this.accountService = accountService;
 

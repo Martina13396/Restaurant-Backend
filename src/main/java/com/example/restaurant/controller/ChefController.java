@@ -24,7 +24,7 @@ import java.util.List;
 )
 @RestController
 @RequestMapping("/api/chef")
-//@CrossOrigin("http://localhost:4200")
+
 public class ChefController {
 
     ChefService chefService;
@@ -37,7 +37,7 @@ public class ChefController {
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
-                    description = "Http Status get all categories"
+                    description = "Http Status get all chefs"
             ),
             @ApiResponse(
                     responseCode = "500",

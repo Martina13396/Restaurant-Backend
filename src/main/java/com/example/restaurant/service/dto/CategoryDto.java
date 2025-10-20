@@ -18,7 +18,7 @@ import java.util.List;
 @Schema(name = "Category Dto" , description = "Category Dto for Category table")
 public class CategoryDto {
     @Schema(name = "Category ID", description = "id for category" , example = "1")
-    private  long id;
+    private  Long id;
     @Schema(name = "Name", description = "Category Name" , example = "Fast Food")
     @NotBlank(message = "category.name.required")
     @Size(min = 2, max = 100, message = "category.name.size")

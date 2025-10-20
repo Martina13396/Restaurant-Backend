@@ -6,6 +6,10 @@ import com.example.restaurant.repo.CategoryRepo;
 import com.example.restaurant.service.CategoryService;
 import com.example.restaurant.service.dto.CategoryDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -27,6 +31,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Cacheable(value = "categories" , key = "'allCategories'")
     public List<CategoryDto> getAllCategoriesByNameAsc() {
         List<Category> categories = categoryRepo.findAllByOrderByNameAsc();
 
@@ -38,10 +43,18 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Caching(evict = {
+            @CacheEvict(value = "categories" , allEntries = true),
+            @CacheEvict (value = "products" , allEntries = true)
+
+
+    })
+
     public CategoryDto saveCategory(CategoryDto categoryDto) {
-       if(Objects.nonNull(categoryDto.getId())) {
-           throw new RuntimeException("id.not.null");
-       }
+        if (Objects.nonNull(categoryDto.getId())) {
+
+            throw new RuntimeException("id.must.null");
+        }
         Category category = categoryMapper.toCategory(categoryDto);
         Category saved = categoryRepo.save(category);
 
@@ -49,6 +62,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Caching(evict = {
+            @CacheEvict(value = "categories" , allEntries = true),
+            @CacheEvict (value = "products" , allEntries = true),
+
+    })
     public List<CategoryDto> saveCategories(List<CategoryDto> categoryDtos) {
         for (CategoryDto categoryDto : categoryDtos) {
             if(Objects.nonNull(categoryDto.getId())) {
@@ -62,6 +80,12 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @CachePut(value = "categories" , key = "#category.id")
+    @Caching(evict = {
+            @CacheEvict(value = "categories" , allEntries = true),
+            @CacheEvict (value = "products" , allEntries = true),
+
+    })
     public CategoryDto updateCategory(CategoryDto categoryDto) {
 
         if(Objects.isNull(categoryDto.getId())) {
@@ -74,6 +98,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Caching(evict = {
+            @CacheEvict(value = "categories" , allEntries = true),
+            @CacheEvict (value = "products" , allEntries = true )
+
+    })
     public List<CategoryDto> updateCategories(List<CategoryDto> categoryDtos) {
 
         for (CategoryDto categoryDto : categoryDtos) {
@@ -87,12 +116,22 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Caching(evict = {
+            @CacheEvict(value = "categories" , allEntries = true),
+            @CacheEvict (value = "products" , allEntries = true),
+
+    })
     public void deleteCateGoryById(Long id) {
 
         categoryRepo.deleteById(id);
     }
 
     @Override
+    @Caching(evict = {
+            @CacheEvict(value = "categories" , allEntries = true),
+            @CacheEvict (value = "products" , allEntries = true),
+
+    })
     public void deleteCategoriesByIds(List<Long> ids) {
 
         categoryRepo.deleteAllById(ids);

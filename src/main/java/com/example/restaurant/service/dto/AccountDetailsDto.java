@@ -1,6 +1,7 @@
 package com.example.restaurant.service.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -19,7 +20,7 @@ public class AccountDetailsDto {
     private Long id;
     @Schema(name = "Age", description = "User age" , example = "25")
     @NotNull(message = "age.notnull")
-    @Size(min = 16,max = 80, message = "age.size")
+    @Min(value = 16 , message = ("age.size"))
     private Integer age;
     @Schema(name = "Phone Number", description = "user phone number" , example = "01234567812")
     @Size(max = 15, message = "phoneNumber.size")

@@ -1,16 +1,23 @@
 package com.example.restaurant.model.security;
 
+import com.example.restaurant.model.BaseEntity;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-public class AccountDetails {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class AccountDetails extends BaseEntity {
+
     private Integer age;
     private String phoneNumber;
     private String address;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     private Account account;
 }

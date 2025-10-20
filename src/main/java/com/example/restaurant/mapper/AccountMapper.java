@@ -1,5 +1,6 @@
 package com.example.restaurant.mapper;
 
+import com.example.restaurant.controller.vm.AuthResponseVm;
 import com.example.restaurant.model.security.Account;
 
 import com.example.restaurant.service.dto.AccountDto;
@@ -9,9 +10,9 @@ import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring" , uses = {RoleMapper.class})
+@Mapper(componentModel = "spring" )
 public interface AccountMapper {
-
+AccountMapper ACCOUNT_MAPPER = Mappers.getMapper( AccountMapper.class );
 
 
 
@@ -22,4 +23,6 @@ public interface AccountMapper {
     List<Account> toAccountList(List<AccountDto> accountDtos);
 
     List<AccountDto> toAccountDtos(List<Account> accounts);
+
+    AuthResponseVm toAuthResponseVm(AccountDto accountDto);
 }

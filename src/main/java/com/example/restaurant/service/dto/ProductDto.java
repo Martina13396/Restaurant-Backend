@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Getter
@@ -36,6 +37,12 @@ public class ProductDto {
     @NotNull(message = "product.price.required")
     @DecimalMin(value = "0.0", inclusive = false, message = "product.price.min")
     private  double price;
+
+    private boolean active = true;
+    private ProductDetailsDto productDetails;
+
+    @NotNull(message ="category.id.notnull")
+    private Long categoryId;
 
 
 }

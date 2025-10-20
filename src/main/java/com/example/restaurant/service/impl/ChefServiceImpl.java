@@ -7,6 +7,7 @@ import com.example.restaurant.repo.ChefRepo;
 import com.example.restaurant.service.ChefService;
 import com.example.restaurant.service.dto.ChefDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 
 
 @Service
+
 public class ChefServiceImpl implements ChefService {
 
     ChefRepo chefRepo;
@@ -28,6 +30,7 @@ public class ChefServiceImpl implements ChefService {
     }
 
     @Override
+    @Cacheable(value = "chefs" , key = "'allChefs'")
     public List<ChefDto> getAllChefs() {
 
         List<Chef> chefs = chefRepo.findAllByOrderByIdAsc();

@@ -1,6 +1,7 @@
 package com.example.restaurant.service.dto;
 
 import com.example.restaurant.model.RoleCode;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -21,5 +22,5 @@ public class RoleDto {
     @NotNull(message = "role.code.notnull")
     private RoleCode code;
 
-    List<AccountDto> users;
+
 }

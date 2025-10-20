@@ -1,12 +1,12 @@
 package com.example.restaurant.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,21 +14,27 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Product {
+public class Product  extends BaseEntity{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private  Long id;
+
     private  String name;
     private String imagePath;
-    @Column(length = 1000)
+    @Column(length = 2000)
     private  String description;
+
     private  double price;
 
+    private boolean active = true;
+
+
+
     @ManyToOne
-    @JsonIgnore
     private Category category;
 
-    @ManyToMany(mappedBy = "products")
-   private List<Order> orders;
+
+    @OneToOne(cascade =  CascadeType.ALL)
+  private ProductDetails productDetails;
+
+    @OneToMany(mappedBy = "product" ,  cascade = CascadeType.ALL)
+   private List<OrderProduct> orderProducts = new ArrayList<>();
 }

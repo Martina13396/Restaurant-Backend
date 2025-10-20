@@ -94,7 +94,7 @@ public class CategoryController {
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
-                    description = "Http Status create category"
+                    description = "Http Status create categories"
             ),
             @ApiResponse(
                     responseCode = "500",
@@ -115,7 +115,7 @@ public class CategoryController {
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
-                    description = "Http Status create category"
+                    description = "Http Status update category"
             ),
             @ApiResponse(
                     responseCode = "500",
