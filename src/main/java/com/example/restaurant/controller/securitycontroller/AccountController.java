@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -50,7 +51,7 @@ public class AccountController {
 
     })
     @PostMapping("/createAccount")
-    ResponseEntity<AccountDto> createAccount(AccountDto accountDto){
+    ResponseEntity<AccountDto> createAccount(@RequestBody @Valid AccountDto accountDto){
         return ResponseEntity.ok(accountService.createAccount(accountDto));
 
     }
@@ -78,7 +79,7 @@ public class AccountController {
             )
     })
     @GetMapping("/getByUserName")
-    ResponseEntity<AccountDto> getAccountByUsername(String username){
+    ResponseEntity<AccountDto> getAccountByUsername(@RequestParam String username){
         return ResponseEntity.ok(accountService.getAccountByUsername(username));
 
     }

@@ -18,6 +18,7 @@ public class AccountDetails extends BaseEntity {
     private String phoneNumber;
     private String address;
 
+
     @OneToOne(fetch = FetchType.EAGER)
     private Account account;
 }

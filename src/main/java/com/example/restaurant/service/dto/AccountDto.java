@@ -23,7 +23,7 @@ public class AccountDto {
     private Long id;
     @Schema(name = "Username", description = "user name" , example = "Ahmed Ali")
     @NotBlank(message = "username.notblank")
-    @Size(min = 7 , message = "username.size")
+    @Size(min = 2, message = "username.size")
     private String username;
     @Schema(name = "Password", description = "Account Password" , example = "tStrong@123")
     @NotBlank(message = "password.notblank")
